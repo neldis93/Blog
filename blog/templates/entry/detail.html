@@ -1,0 +1,59 @@
+<!-- head para PC -->
+{% extends "entry/base_entry.html" %}
+{% load  static %}
+
+<!-- entry_detail viene del views.py del context_object_name de la clase EntryDetailView y title del models.py de entry-->
+{% block title %}
+{{ entry_detail.title }}  
+{% endblock title %}
+
+{% block description %}
+<meta name="description" content="{{ entry_detail.summary }}"> 
+{% endblock description %}
+
+
+{% block tags %}
+<meta name="keywords" content="
+{% for t in entry_detail.tag.all %}
+    {{ t.name }}
+{% endfor %}
+"> 
+{% endblock tags %}
+
+{% block content %}
+
+{% include "includes/header.html" %}
+
+<div class="grid-container">
+    <div class="grid-x grid-margin-x" style="margin-top: 1em;">
+        <h3 class="cell">{{ entry_detail.title }}</h3>
+
+        <!-- bloque de contenido del articulo -->
+        <div class="cell large-8">
+            <div class="cell callout primary">
+                <h5>Summary:</h5>
+                <p>{{ entry_detail.summary }}</p>
+            </div>
+            <div>
+                <p>{{ entry_detail.content | safe }}</p>
+            </div>
+        </div>
+        <!-- FIN bloque contenido del articulo -->
+
+        <!-- bloque llamada a la accion -->
+        <div class="cell large-4">
+            <div class="card" style="width: 100%;">
+                <img src="{% static 'img/logo_favorite.PNG' %}"  style="width: 250px; align-self: center;">
+                <div class="card-section" style="width: 100%;">
+                  <form class="blog-action" method="POST" action="{% url 'favorite_app:favorite_add' entry_detail.id %}">{% csrf_token %}
+                    <button type="submit" class="button alert">Add to favorites</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+        <!-- FIN bloque llamada a la accion -->
+    </div>
+</div>
+{% include "includes/footer.html" %}
+
+{% endblock content %}

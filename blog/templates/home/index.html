@@ -1,0 +1,107 @@
+<!-- head para PC -->
+{% extends "home/base_home.html" %}
+{% load  static %}
+
+<!-- home viene del views.py del context['home'] y title del models.py de home-->
+{% block title %}
+{{ home.title }}  
+{% endblock title %}    
+
+{% block description %}
+<meta name="description" content="{{ home.description }}"> 
+{% endblock description %}
+
+{% block content %}
+
+{% include "includes/header.html" %}
+
+<div class="grid-container">
+    <!-- primer bloque del home -->
+    <div class="grid-x grid-margin-x" style="margin-top: 1em;">
+        <!-- bloque de blog principal -->
+        <div class="cell small-12 large-6">
+            <div class="card" style="width: 100%;">
+                <img src="{{ cover_page.image.url }}">
+                <div class="card-section">
+                  <h4><a href="{% url 'entry_app:detail_inputs' cover_page.id %}">{{ cover_page.title }}</a></h4>
+                  <p>{{ cover_page.summary | truncatechars:100 }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- FIN bloque de blog principal -->
+
+        <!-- bloque de blog principal -->
+        <div class="cell small-12 large-6 grid-x grid-margin-x">
+            
+            {% for entry in entry_home %}
+
+            <div class="cell small-12 large-6">
+                <div class="card" style="width: 100%;">
+                    <img src="{{ entry.image.url }}">
+                    <div class="card-section">
+                      <h5><a href="{% url 'entry_app:detail_inputs' entry.id %}">{{ entry.title }}</a></h5>
+                      <p>{{ entry.summary | truncatechars:60 }}</p>
+                    </div>
+                </div>
+            </div>
+                
+            {% endfor %}
+                
+        </div>
+        <!-- FIN bloque de blog principal -->
+    </div>
+    <!-- FIN del primer bloque home -->
+
+    <!-- segundo bloque pantalla home -->
+    <div class="grid-x align-center" style="margin-top: 1em;">
+        <div class="cell small-12 large-10 callout secondary">
+            <h3>{{ home.description }}</h3>
+            <h5>{{ home.about_title }}</h5>
+            <p>
+                {{ home.about_text }}
+            </p>
+
+            <p>
+                <button class="button" data-open="exampleModal2">Suscribirme</button>
+            </p>
+
+            <!-- This is the first modal -->
+            <div class="reveal" id="exampleModal2" data-reveal style="width: 300px;">
+                <p class="lead">Enter your email</p>
+                <form class="grid-x grid-margin-x" method="POST" action="{% url 'home_app:add_suscriber' %}">{% csrf_token %}
+                    <div class="cell small-12">
+                        {{ form.email }}
+                    </div>
+                    <div class="cell small-12">
+                        <button type="submit" class="success button">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <!-- FIN segundo bloque pantalla home -->
+
+
+    <!-- tercer bloque home -->
+    <div class="grid-x grid-margin-x align-center">
+        <h3 class="cell">Recent Articles:</h3>
+
+        {% for entry in entry_recent %}
+            <div class="cell small-6 large-2">
+                <div class="card" style="width: 100%;">
+                    <img src="{{ entry.image.url }}" style="width: 300px;">
+                    <div class="card-section">
+                    <h4> <a href="{% url 'entry_app:detail_inputs' entry.id %}">{{ entry.title | truncatechars:30 }}</a></h4>
+                    <p>{{ entry.summary | truncatechars:50 }}</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}    
+    </div>
+    <!-- FIN tercer bloque -->
+</div>
+{% include "includes/footer.html" %}
+
+{% endblock content %}

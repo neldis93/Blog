@@ -1,0 +1,30 @@
+<header>
+    <div class="grid-x grid-margin-x header" style="background-color: #222222;">
+        <div class="cell small-12 medium-4 large-3">
+            <a href="{% url 'home_app:index' %}" style="font-size: 20px; color: #0277bd;">
+                Neldis Blog
+            </a>
+        </div>
+        <div class="cell small-12 medium-4">
+            
+        </div>
+        <div class="cell small-12 large-5">
+            <ul class="menu" style="justify-content: flex-end;">
+                <li>
+                    <a href="{% url 'home_app:index' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'entry_app:entry' %}">Blog</a>
+                </li>
+                <li>
+                    {% if not user.is_anonymous %}
+                        <a href="{% url 'favorite_app:profile' %}" class="warning button">Profile</a>
+                    {% else %}
+                        <a href="{% url 'users_app:user_login' %}" class="primary button">Access</a>
+                    {% endif %}
+                        
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
