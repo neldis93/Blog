@@ -1,3 +1,3 @@
 # Blog
 Personal blog sample.
-Django Course.
+Test example.
